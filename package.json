@@ -1,14 +1,14 @@
 {
-  "name": "medium-crawler",
-  "version": "0.0.0",
+  "name": "medium-apis",
+  "version": "1.0.0",
   "private": true,
   "author": {
-    "name" : "Shubham Melvin Felix",
-    "email" : "felix.melvin117@gmail.com"
+    "name": "Shubham Melvin Felix",
+    "email": "felix.melvin117@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/melvin1117/medium-crawler"
+    "url": "https://github.com/melvin1117/medium-apis"
   },
   "scripts": {
     "start": "nodemon ./bin/www"
