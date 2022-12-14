@@ -1,6 +1,7 @@
 var createError = require("http-errors");
 var cors = require('cors')
 var express = require("express");
+var apicache = require("apicache");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -8,6 +9,14 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 
 var app = express();
+
+
+
+// configure apicache 
+const cache = apicache.middleware;
+  
+// caching all routes for 60 minutes
+app.use(cache('60 minutes'));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
