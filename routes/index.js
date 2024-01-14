@@ -72,8 +72,8 @@ async function getStatsByURL(url) {
     const responseText = await (await fetch(url)).text();
     console.log("received content for clap and comment")
     const stats = {
-      claps: +extractContentBy(responseText, '"clapCount":', ","),
-      comments: +extractContentBy(responseText, '"count":', "}"),
+      claps: +extractContentBy(responseText, '"clapCount":', ",") || 0,
+      comments: +extractContentBy(responseText, '"count":', "}") || 0,
     };
     return stats;
   } catch (error) {
