@@ -13,6 +13,9 @@ router.get("/user", async (req, res) => {
         jsonResponse?.items.map(async (item) => {
           const stats = await getStatsByURL(item.link);
           item["stats"] = stats;
+          if (!item?.thumbnail) {
+            item.thumbnail = extractContentBy(item.content, 'src="', '">')
+          }
           updatedItems.push(item);
         })
       );
@@ -67,18 +70,20 @@ async function getFeedByURL(username) {
 async function getStatsByURL(url) {
   const responseText = await (await fetch(url)).text();
   const stats = {
-    claps: extractContentBy(responseText, '"clapCount":', ","),
-    comments: extractContentBy(responseText, '"count":', "}"),
+    claps: +extractContentBy(responseText, '"clapCount":', ","),
+    comments: +extractContentBy(responseText, '"count":', "}"),
   };
   return stats;
 }
 
 function extractContentBy(content, firstSplit, secondSplit) {
-  const splits = content.split(firstSplit);
-  if (splits.length) {
-    const commaSplit = splits[1].split(secondSplit);
-    if (commaSplit.length) {
-      return +commaSplit[0];
+  if (content) {
+    const splits = content.split(firstSplit);
+    if (splits.length) {
+      const commaSplit = splits[1].split(secondSplit);
+      if (commaSplit.length) {
+        return commaSplit[0];
+      }
     }
   }
   return undefined;
