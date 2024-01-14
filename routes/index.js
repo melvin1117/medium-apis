@@ -68,22 +68,32 @@ async function getFeedByURL(username) {
 }
 
 async function getStatsByURL(url) {
-  const responseText = await (await fetch(url)).text();
-  const stats = {
-    claps: +extractContentBy(responseText, '"clapCount":', ","),
-    comments: +extractContentBy(responseText, '"count":', "}"),
-  };
-  return stats;
+  try {
+    const responseText = await (await fetch(url)).text();
+    console.log("received content for clap and comment")
+    const stats = {
+      claps: +extractContentBy(responseText, '"clapCount":', ","),
+      comments: +extractContentBy(responseText, '"count":', "}"),
+    };
+    return stats;
+  } catch (error) {
+    console.log("Error while fetching the blog content for clap and comment")
+    console.error(error)
+  }
 }
 
 function extractContentBy(content, firstSplit, secondSplit) {
   if (content) {
     const splits = content.split(firstSplit);
-    if (splits.length) {
+    if (splits.length > 1) {
       const commaSplit = splits[1].split(secondSplit);
       if (commaSplit.length) {
         return commaSplit[0];
+      } else {
+        console.log(`Second Splitting unsuccessful ${secondSplit} -- ${commaSplit}`)
       }
+    } else{
+      console.log(`First Splitting unsuccessful ${firstSplit} -- ${splits}`)
     }
   }
   return undefined;
